@@ -51,13 +51,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const MAINSLIDE = new Swiper('.main_slider', {
         loop: true,
+        // parallax: true,
+        // //centeredSlides: true,
+        //speed: 1000,
         slideActiveClass: 'on', // .swiper-slide-active 대신 .on을 쓸거임...
+
         on: {
             slideChangeTransitionEnd: function () {
                 let count = this.realIndex; // 0 1 2
                 slideDots.forEach(it => it.classList.remove('on'))
                 slideDots[count].classList.add('on');
-                document.querySelector('.main_slider_num').innerHTML = (this.realIndex + 1) + " / <span>" + (this.slides.length - 2);
+                document.querySelector('.main_slider_num').innerHTML = "0" + (this.realIndex + 1) + " / <span>0" + (this.slides.length - 2);
             }
         }
     });
@@ -79,6 +83,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const PRS = new Swiper('.portfolio_right_slide', {
         loop: true,
+        effect: "slide",
+        speed: 500,
+        allowTouchMove: false,
         slidesPerView: 5,
         spaceBetween: 30,
     });
@@ -86,23 +93,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const PLS = new Swiper('.portfolio_left_slide', {
         loop: true,
+        speed: 500,
         effect: "fade",
+        allowTouchMove: false,
         fadeEffect: {
             crossFade: true
         },
+
     });
 
-
+    PRS.controller.control = PLS;
 
     document.querySelector('.Portfolio .slide_handler .next').addEventListener('click', () => {
-        PLS.slideNext();
+        PRS.slideNext();
     });
     document.querySelector('.Portfolio .slide_handler .prev').addEventListener('click', () => {
-        PLS.slidePrev();
+        PRS.slidePrev();
     });
 
-    PLS.controller.control = PRS;
-    PRS.controller.control = PLS;
+
+    // PRS.controller.control = PLS;
 
     //출처: https://www.biew.co.kr/entry/Swiper-슬라이드-Swiper-2개-연동과-제어Controller [웹퍼블리싱 - 퍼블리싱 이야기 맑은커뮤니케이션:티스토리]
     //centeredSlides: true,
@@ -111,7 +121,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const solutionDots = document.querySelectorAll('.solution_dots li'); //유사배열... 
 
     const SCS = new Swiper('.Solution .center_slider', {
-        loop: true,
+        loop: false,
         // slidesPerView: 2,
         spaceBetween: 100,
         centeredSlides: true,
@@ -223,7 +233,9 @@ window.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.popup').style.display = 'none';
     });
 
-
+    document.querySelector('.popup').addEventListener('wheel', e => {
+        e.preventDefault();
+    })
 
 
 
